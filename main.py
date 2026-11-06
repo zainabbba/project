@@ -3,7 +3,7 @@ import json
 import pandas as pd
 import joblib
 import streamlit as st
-
+from Helper.helper import predict_rul
 st.set_page_config(
     page_title="Engine RUL Prediction",
     page_icon="✈️",
@@ -90,10 +90,15 @@ if submitted:
     # نفس أسماء المدخلات وترتيبها المستخدم في التدريب
     input_df = pd.DataFrame([inputs], columns=feature_columns)
 
+    # predictions = {
+    #     name: float(model.predict(input_df)[0])
+    #     for name, model in models.items()
+    # }
+    model_predictions = predict_rul(models, input_df)
     predictions = {
-        name: float(model.predict(input_df)[0])
-        for name, model in models.items()
-    }
+    name: float(values[0])
+    for name, values in model_predictions.items()
+}
 
     st.subheader("Selected model prediction")
     st.metric(
